@@ -25,7 +25,7 @@ const App = () => {
     const apiKey = ''; // OUR_API_KEY
     const prompt = ''; // OUR_MESSAGE;
 
-    const apiURl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+    const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
 
     const headers = {
       'Content-Type': 'application/json',
