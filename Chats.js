@@ -22,7 +22,34 @@ const App = () => {
   };
 
   const sendMessageToChatGPT = async (message) => {
-    
+    const apiKey = ''; // OUR_API_KEY
+    const prompt = ''; // OUR_MESSAGE;
+
+    const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization' : `Bearer ${apiKey}`
+    };
+
+    const data = {
+      prompt : prompt,
+      max_tokens: 900
+    };
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      const completion = data.choices[0].text;
+      console.log(completion);
+    })
+    .catch(error => {
+      console.error('Error:', error); // 수정 요
+    })
   };
 
   const handleKeyPress = (e) => {
