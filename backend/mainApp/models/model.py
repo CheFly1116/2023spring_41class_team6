@@ -1,10 +1,8 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
-from database import Base
+from flask_sqlalchemy import SQLAlchemy
 
-class User(Base):
-    __tablename__ = "users"
+db = SQLAlchemy()
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    password = Column(String)
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    password = db.Column(db.String(128))
