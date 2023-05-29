@@ -7,6 +7,3 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128), nullable=False)
     password = db.Column(db.String(128), nullable=False)
-
-    def __init__(self, password):
-        self.set_password(password)
