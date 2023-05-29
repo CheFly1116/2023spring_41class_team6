@@ -15,12 +15,11 @@ function Login({navigation}) {
   const [password, setPassword] = useState('');
 
   const skkuLoginSubmit = () => {
-    const skkuUrl = "http://127.0.0.1:5000/login";
+    const skkuUrl = "http://127.0.0.1:5000/login/";
     const headers = {
         'Content-Type': 'application/json'
     };
     const data = {
-        "lang": "ko",
         "username": username,
         "password": password
     };
@@ -31,7 +30,9 @@ function Login({navigation}) {
     })
     .then(response => response.json())
     .then((responseJson) => {
-        console.log(responseJson)
+        if (responseJson["success"] == true)
+          navigation.navigate('Chats');
+        else console.log("로그인에 실패하였습니다. 아이디와 비밀번호를 확인하세요")
     })
   };
 
