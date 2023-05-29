@@ -3,7 +3,6 @@ from flask import jsonify
 from elasticsearch import Elasticsearch
 
 from services import example_services as example_services
-from services import openai_service as openai_service
 from services import es_service as es_service
 
 search_bp = Blueprint(name='search',
