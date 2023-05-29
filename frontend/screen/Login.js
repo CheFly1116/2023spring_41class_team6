@@ -15,18 +15,15 @@ function Login({navigation}) {
   const [password, setPassword] = useState('');
 
   const skkuLoginSubmit = () => {
-    const skkuUrl = "https://login.skku/edu/loginAction";
-
+    const skkuUrl = "http://127.0.0.1:5000/login";
     const headers = {
         'Content-Type': 'application/json'
     };
-
     const data = {
         "lang": "ko",
-        "userid": username,
-        "userpwd": base64.encode(password)
+        "username": username,
+        "password": password
     };
-
     fetch(skkuUrl, {
         method: "POST",
         headers: headers,
