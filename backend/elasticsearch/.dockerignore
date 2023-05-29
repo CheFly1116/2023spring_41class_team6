@@ -1,0 +1,5 @@
+documents/
+.gitignore
+docker-compose.yml
+index.py
+README.md
