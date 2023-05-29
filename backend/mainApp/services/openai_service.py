@@ -22,15 +22,18 @@ def generate_answer(document: str, user_message: str) -> str:
     :param user_message: user message
     :return: answer
     """
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": OPENAI_SYSTEM_MESSAGE},
-            {"role": "user", "content": OPENAI_QUERY_BODY.format(document=document, query=user_message)}
-        ],
-        max_tokens=512,
-        temperature=0.2
-    )
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": OPENAI_SYSTEM_MESSAGE},
+                {"role": "user", "content": OPENAI_QUERY_BODY.format(document=document, query=user_message)}
+            ],
+            max_tokens=512,
+            temperature=0.2
+        )
+    except openai.error.AuthenticationError:
+        return "OpenAI API Key가 잘못되었습니다. 나중에 다시 시도해주세요."
 
     try:
         answer = response.choices[0]["message"]["content"]
