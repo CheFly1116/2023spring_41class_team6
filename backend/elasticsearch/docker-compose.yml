@@ -1,4 +1,4 @@
-version: '1'
+version: '3.7'
 
 services:
   elasticsearch:
@@ -11,11 +11,12 @@ services:
       - cluster.name=elasticsearch
       - discovery.type=single-node
       - xpack.security.enabled=false
-    volumes:
-      - ./data:/usr/share/elasticsearch/data
+    # Uncomment the following lines to persist data on the host machine
+    #    volumes:
+    #      - ./data:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
-      - 9300:9300
+      - "9200:9200"
+      - "9300:9300"
     networks:
       - elastic
 
@@ -26,7 +27,7 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - xpack.security.enabled=false
     ports:
-      - 5601:5601
+      - "5601:5601"
     networks:
       - elastic
 

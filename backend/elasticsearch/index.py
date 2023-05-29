@@ -1,3 +1,7 @@
+"""
+Bulk index a jsonl file into Elasticsearch.
+"""
+import gzip
 import json
 from sys import argv
 from typing import Optional
@@ -19,9 +23,14 @@ def bulk_index(
     :return: None
     """
     documents = []
-    with open(jsonl_path, "r", encoding="utf-8") as f:
-        for line in f:
-            documents.append(json.loads(line))
+    if jsonl_path.endswith("jsonl"):
+        with open(jsonl_path, "r", encoding="utf-8") as f:
+            for line in f:
+                documents.append(json.loads(line))
+    elif jsonl_path.endswith("jsonl.gz"):
+        with gzip.open(jsonl_path, "rt", encoding="utf-8") as f:
+            for line in f:
+                documents.append(json.loads(line))
 
     es = elasticsearch.Elasticsearch(hosts=host, **kwargs)
 
