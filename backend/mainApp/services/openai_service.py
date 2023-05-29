@@ -1,6 +1,6 @@
 import openai
 
-openai.api_key = "API_KEY"  # OpenAI API Key
+openai.api_key = "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"  # OpenAI API Key
 
 # OpenAI System Message
 OPENAI_SYSTEM_MESSAGE = "당신은 성균관대학교 학생을 돕는 챗봇 'SKKU-GPT' 입니다. 당신은 사용자의 질문과 관련 문서가 주어졌을 때, " \
