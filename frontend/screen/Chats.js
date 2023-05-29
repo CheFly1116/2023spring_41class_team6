@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const App = () => {
+//const App = () => {
+function Chats({navigation}){
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
 
@@ -80,7 +81,7 @@ const App = () => {
           fontWeight: 'bold',
         }}
       >
-        SKKU-GPT
+        <text>SKKU-GPT</text>
       </div>
 
 
@@ -110,7 +111,7 @@ const App = () => {
                 borderRadius: '8px',
               }}
             >
-              {message.text}
+              <text>{message.text}</text>
             </div>
           </div>
         ))}
@@ -151,12 +152,12 @@ const App = () => {
             height: '52px',
           }}
           onClick={handleMessageSubmit}
+          title='Send'
         >
-          Send
         </button>
       </div>
     </div>
   );
 };
 
-export default App;
+export default Chats;
