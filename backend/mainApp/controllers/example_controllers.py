@@ -1,10 +1,5 @@
-from flask import Blueprint, request
-from flask import jsonify
-from elasticsearch import Elasticsearch
-
-from services import example_services as example_services
-from services import openai_service as openai_service
-from services import es_service as es_service
+from flask import Blueprint, jsonify, request
+from services import es_service as es_service, example_services as example_services, openai_service as openai_service
 
 search_bp = Blueprint(name='search',
                       import_name=__name__,
@@ -25,9 +20,12 @@ register_bp = Blueprint(name='register',
 @search_bp.route('/', methods=['POST']) # Flask <-> ElasticSearch, Flask <-> OpenAI
 def docs_search():
     query = request.json.get('query')
-    result = es_service.get_rules(query)
-    hits = result['hits']['hits'] # result가 OpenAI가 생성한 답변으로 나올 것이므로 수정 필요
-    response = {'hits': hits}
+
+    document = es_service.search_document(query)
+    answer = openai_service.generate_answer(document, query)
+
+    response = {"hits": answer}
+
     return jsonify(response)
 
 @login_bp.route('/', methods=['POST'])
