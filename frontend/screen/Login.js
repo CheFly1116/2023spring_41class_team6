@@ -13,7 +13,6 @@ import base64 from 'base-64';
 function Login({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [LoginSuccess, setLoginSuccess] = useState(false);
 
   const skkuLoginSubmit = () => {
     const skkuUrl = "https://login.skku/edu/loginAction";
@@ -61,10 +60,10 @@ function Login({navigation}) {
           onChangeText={password => setPassword(password)}
         />
       </View>
-      {/* onPress={() => navigation.navigate('Chats')} */}
+      {/* onPress={skkuLoginSubmit} */}
       <Pressable
         style={styles.loginBtn}
-        onPress={skkuLoginSubmit}
+        onPress={() => navigation.navigate('Chats')}
     >
         <Text style={styles.loginText}>LOGIN</Text>
       </Pressable>
