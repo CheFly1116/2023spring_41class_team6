@@ -20,6 +20,10 @@ query_bp = Blueprint(name='query',
                       import_name=__name__,
                       url_prefix='/query')
 
+login_bp = Blueprint(name='login',
+                     import_name=__name__,
+                     url_prefix='/login')
+
 @example_bp.route('/', methods=['GET'])
 def example_route() -> str:
     data = 'hello_world'
@@ -51,4 +55,10 @@ def docs_search():
 def generate_answer():
     data = request.json
     response = example_services.generate_answer(data)
+    return jsonify(response)
+
+@login_bp.route('/', methods=['POST'])
+def login():
+    data = request.json
+    response = example_services.login(data)
     return jsonify(response)
