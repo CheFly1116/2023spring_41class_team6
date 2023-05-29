@@ -39,4 +39,3 @@ def register():
     data = request.get_json(silent=True)
     response = example_services.register_user(data)
     return jsonify(response)
-    
