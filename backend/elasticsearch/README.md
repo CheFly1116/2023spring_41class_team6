@@ -32,6 +32,7 @@ docker-compose down
 
 ## 문서 색인
 
+Docker 컨테이너가 실행된 상태에서 아래 명령어를 실행
 ```bash
-python index.py http://localhost:9200 documents/*.jsonl
+python index.py http://localhost:9200 documents/data.jsonl.gz
 ```
