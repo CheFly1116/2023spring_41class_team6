@@ -32,13 +32,13 @@ def docs_search():
 
 @login_bp.route('/', methods=['POST'])
 def login():
-    data = request.json
+    data = request.get_json(silent=True)
     response = example_services.login(data)
     return jsonify(response)
 
 @register_bp.route('/', methods=['POST'])
 def register():
     data = request.get_json(silent=True)
-    response = example_services.register(data)
+    response = example_services.register_user(data)
     return jsonify(response)
     
