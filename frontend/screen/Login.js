@@ -6,14 +6,39 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   Pressable,
 } from 'react-native';
+import base64 from 'base-64';
 
 function Login({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [LoginSuccess, setLoginSuccess] = useState(false);
+
+  const skkuLoginSubmit = () => {
+    const skkuUrl = "https://login.skku/edu/loginAction";
+
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+
+    const data = {
+        "lang": "ko",
+        "userid": username,
+        "userpwd": base64.encode(password)
+    };
+
+    fetch(skkuUrl, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then((responseJson) => {
+        console.log(responseJson)
+    })
+  };
+
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require('./assets/logo.jpg')} />
@@ -36,12 +61,14 @@ function Login({navigation}) {
           onChangeText={password => setPassword(password)}
         />
       </View>
-      
-      <Pressable style={styles.loginBtn} onPress={() => navigation.navigate('Chats')}>
+      {/* onPress={() => navigation.navigate('Chats')} */}
+      <Pressable
+        style={styles.loginBtn}
+        onPress={skkuLoginSubmit}
+    >
         <Text style={styles.loginText}>LOGIN</Text>
       </Pressable>
     </View>
-   
   );
 }
 const styles = StyleSheet.create({
