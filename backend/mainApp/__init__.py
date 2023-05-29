@@ -4,15 +4,8 @@ from flask_migrate import Migrate
 from models.database import SessionLocal
 from routes import routes_list
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
 app = Flask(__name__)
+db = SQLAlchemy(app)
 
 #routes list
 routes_list(app)
@@ -26,10 +19,10 @@ def not_found(error):
 def internal_error(error):
     return make_response(jsonify({'error': 'Internal server error'}), 500)
 
-
 @app.route('/')
 def hello_world():
     return 'hello world!'
 
 if __name__=='__main__':
+    
     app.run(debug=True)
