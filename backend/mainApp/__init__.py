@@ -34,9 +34,6 @@ if __name__=='__main__':
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
     app.config['SECRET_KEY'] = 'wcsfeufhwiquehfdx'
 
-    csrf = CSRFProtect()
-    csrf.init_app(app)
-
     db.init_app(app)
     db.app = app
     with app.app_context():
