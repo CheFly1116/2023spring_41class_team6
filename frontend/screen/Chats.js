@@ -3,9 +3,9 @@ import {
   Text,
   StyleSheet,
   View,
-  Image,
   TextInput,
   Pressable,
+  FlatList,
 } from 'react-native';
 
 function Chats({navigation}) {
@@ -15,12 +15,14 @@ function Chats({navigation}) {
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
 
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // }, []);
+  useEffect(() => {
+    console.log('???');
+    //inputRef.current.focus();
+  }, []);
 
   const handleMessageSubmit = e => {
     e.preventDefault();
+    console.log('ssss');
     const message = inputText.trim();
     if (message !== '') {
       setMessages([...messages, {text: message, isUser: true}]);
@@ -30,7 +32,7 @@ function Chats({navigation}) {
   };
 
   const sendMessageToChatGPT = async message => {
-    const url = 'http://127.0.0.1:5000/search';
+    const url = 'http://127.0.0.1:5000/search/';
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -41,6 +43,7 @@ function Chats({navigation}) {
       });
       if (response.ok) {
         const data = await response.json();
+        setMessages([...messages, {text: data, isUser: false}]);
         // data로 채팅창에 답변 띄우는 과정 필요, 구현 부탁드립니다
       } else {
         const errorData = await response.json();
@@ -61,16 +64,34 @@ function Chats({navigation}) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>SKKU-GPT</Text>
+        {/* logout 버튼 */}
       </View>
       <View style={styles.body}>
-        <Text>message</Text>
+        {messages.map((message, index) => (
+          <View>
+            {message.isUser ? (
+              <View key={message} style={styles.myMsg}>
+                <View style={styles.myMsgBox}>
+                  <Text style={styles.myText}> {message.text}</Text>
+                </View>
+              </View>
+            ) : (
+              <View key={message} style={styles.otherMsg}>
+                <View style={styles.otherMsgBox}>
+                  <Text style={styles.otherText}> {message.text}</Text>
+                </View>
+              </View>
+            )}
+          </View>
+        ))}
       </View>
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
           placeholder="Ask anything."
-          placeholderTextColor="#003f5c"></TextInput>
-        <Pressable style={styles.sendBtn}>
+          placeholderTextColor="#003f5c"
+          onChangeText={inputText => setInputText(inputText)}></TextInput>
+        <Pressable style={styles.sendBtn} onPress={handleMessageSubmit}>
           <Text style={styles.sendText}>Send</Text>
         </Pressable>
       </View>
@@ -98,7 +119,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: '#B6BFD0',
-    width:'100%',
+    width: '100%',
   },
   inputView: {
     width: '100%',
@@ -109,6 +130,7 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     width: '80%',
+    backgroundColor: 'white',
   },
   sendBtn: {
     backgroundColor: '#002554',
@@ -119,6 +141,28 @@ const styles = StyleSheet.create({
   sendText: {
     color: 'white',
     fontWeight: '700',
+  },
+  myMsg: {
+    flexDirection: 'row-reverse',
+    marginBottom: 5,
+    padding: 5,
+  },
+  otherMsg: {
+    flexDirection: 'row',
+    marginBottom: 5,
+    padding: 5,
+  },
+  myMsgBox: {
+    maxWidth: '70%',
+    borderRadius: 5,
+    backgroundColor: 'yellow',
+    padding: 10,
+  },
+  otherMsgBox: {
+    maxWidth: '70%',
+    borderRadius: 5,
+    backgroundColor: 'white',
+    padding: 10,
   },
 });
 
