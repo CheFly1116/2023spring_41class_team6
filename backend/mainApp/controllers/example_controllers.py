@@ -1,10 +1,5 @@
-from flask import Blueprint, request
-from flask import jsonify
-from elasticsearch import Elasticsearch
-
-from services import example_services as example_services
-from services import openai_service as openai_service
-from services import es_service as es_service
+from flask import Blueprint, jsonify, request
+from services import es_service as es_service, example_services as example_services, openai_service as openai_service
 
 search_bp = Blueprint(name='search',
                       import_name=__name__,
@@ -44,4 +39,3 @@ def register():
     data = request.get_json(silent=True)
     response = example_services.register_user(data)
     return jsonify(response)
-    
