@@ -35,7 +35,7 @@ def generate_answer(document: str, user_message: str) -> str:
     try:
         answer = response.choices[0]["message"]["content"]
 
-    except AttributeError:
+    except:
         return "ChatGPT가 답변을 생성하지 못했습니다. 나중에 다시 시도해주세요."
 
     return answer
