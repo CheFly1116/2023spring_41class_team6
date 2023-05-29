@@ -3,10 +3,8 @@ from flask import jsonify
 from elasticsearch import Elasticsearch
 
 from services import example_services as example_services
-
-example_bp = Blueprint(name='example',
-                       import_name=__name__,
-                       url_prefix='/example')
+from services import openai_service as openai_service
+from services import es_service as es_service
 
 openai_bp = Blueprint(name='answer',
                       import_name=__name__,
@@ -24,17 +22,6 @@ login_bp = Blueprint(name='login',
                      import_name=__name__,
                      url_prefix='/login')
 
-@example_bp.route('/', methods=['GET'])
-def example_route() -> str:
-    data = 'hello_world'
-    result = example_services.example_route(data=data)
-    return jsonify(result=result)
-
-@example_bp.route('/<int:user_number>', methods=['GET'])
-def example_route_add_param(user_number: int) -> str:
-    result = example_services.example_route_add_param(user_number)
-    return jsonify(result=result)
-
 @openai_bp.route('/', methods=['GET']) # openai 답변 생성 요청 들어갈 곳
 def answer_route() -> str:
     data = 'hello_world'
@@ -46,7 +33,7 @@ es = Elasticsearch('https://localhost:9200')
 @search_bp.route('/', methods=['POST']) # Flask <-> ElasticSearch
 def docs_search():
     query = request.json.get('query')
-    result = es.search(index='my_index', body={'query': {'match' : {'text': query}}})
+    result = es_service.get_rules(query)
     hits = result['hits']['hits']
     response = {'hits': hits}
     return jsonify(response)
@@ -54,7 +41,7 @@ def docs_search():
 @query_bp.route('/', methods=['POST']) # Android <-> Flask
 def generate_answer():
     data = request.json
-    response = example_services.generate_answer(data)
+    response = openai_service.generate_answer(data)
     return jsonify(response)
 
 @login_bp.route('/', methods=['POST'])
