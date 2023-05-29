@@ -5,10 +5,6 @@ search_bp = Blueprint(name='search',
                       import_name=__name__,
                       url_prefix='/search')
 
-query_bp = Blueprint(name='query',
-                      import_name=__name__,
-                      url_prefix='/query')
-
 login_bp = Blueprint(name='login',
                      import_name=__name__,
                      url_prefix='/login')
@@ -25,17 +21,21 @@ def docs_search():
     answer = openai_service.generate_answer(document, query)
 
     response = {"hits": answer}
-
+    print(response)
     return jsonify(response)
 
 @login_bp.route('/', methods=['POST'])
 def login():
-    data = request.get_json(silent=True)
-    response = example_services.login(data)
-    return jsonify(response)
+    content = request.get_json(silent=True)
+    username = content["username"]
+    password = content["password"]
+    response = example_services.login(username, password)
+    return jsonify({'success': response})
 
 @register_bp.route('/', methods=['POST'])
 def register():
-    data = request.get_json(silent=True)
-    response = example_services.register_user(data)
-    return jsonify(response)
+    content = request.get_json(silent=True)
+    username = content["username"]
+    password = content["password"]
+    response = example_services.register_user(username, password)
+    return jsonify({'success': response})
