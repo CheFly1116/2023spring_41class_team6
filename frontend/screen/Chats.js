@@ -23,34 +23,25 @@ function Chats({navigation}){
   };
 
   const sendMessageToChatGPT = async (message) => {
-    const apiKey = ''; // OUR_API_KEY
-    const prompt = ''; // OUR_MESSAGE;
-
-    const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization' : `Bearer ${apiKey}`
-    };
-
-    const data = {
-      prompt : prompt,
-      max_tokens: 900
-    };
-
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-      const completion = data.choices[0].text;
-      console.log(completion);
-    })
-    .catch(error => {
-      console.error('Error:', error); // 수정 요
-    })
+    const url = 'http://127.0.0.1:5000/search'
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({content: message}),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // data로 채팅창에 답변 띄우는 과정 필요, 구현 부탁드립니다
+      } else {
+        const errorData = await response.json();
+        // 오류 처리 부분입니다
+      }
+    } catch (error) {
+      console.error('Error', error);
+    }
   };
 
   const handleKeyPress = (e) => {

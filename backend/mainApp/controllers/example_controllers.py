@@ -6,10 +6,6 @@ from services import example_services as example_services
 from services import openai_service as openai_service
 from services import es_service as es_service
 
-openai_bp = Blueprint(name='answer',
-                      import_name=__name__,
-                      url_prefix='/answer')
-
 search_bp = Blueprint(name='search',
                       import_name=__name__,
                       url_prefix='/search')
@@ -22,26 +18,16 @@ login_bp = Blueprint(name='login',
                      import_name=__name__,
                      url_prefix='/login')
 
-@openai_bp.route('/', methods=['GET']) # openai 답변 생성 요청 들어갈 곳
-def answer_route() -> str:
-    data = 'hello_world'
-    result = example_services.answer_route(data=data)
-    return jsonify(result=result)
+register_bp = Blueprint(name='register',
+                        import_name=__name__,
+                        url_prefix='/register')
 
-es = Elasticsearch('https://localhost:9200')
-
-@search_bp.route('/', methods=['POST']) # Flask <-> ElasticSearch
+@search_bp.route('/', methods=['POST']) # Flask <-> ElasticSearch, Flask <-> OpenAI
 def docs_search():
     query = request.json.get('query')
     result = es_service.get_rules(query)
-    hits = result['hits']['hits']
+    hits = result['hits']['hits'] # result가 OpenAI가 생성한 답변으로 나올 것이므로 수정 필요
     response = {'hits': hits}
-    return jsonify(response)
-
-@query_bp.route('/', methods=['POST']) # Android <-> Flask
-def generate_answer():
-    data = request.json
-    response = openai_service.generate_answer(data)
     return jsonify(response)
 
 @login_bp.route('/', methods=['POST'])
@@ -49,3 +35,10 @@ def login():
     data = request.json
     response = example_services.login(data)
     return jsonify(response)
+
+@register_bp.route('/', methods=['POST'])
+def register():
+    data = request.get_json(silent=True)
+    response = example_services.register(data)
+    return jsonify(response)
+    

@@ -1,11 +1,13 @@
-def example_route(data:str) -> str:
+from models.crud import db_register_user, db_get_users, db_del_user
+from models.database import SessionLocal, engine, Base
+from models.schema import UserSchema
+from models.model import User
+from typing import List
+
+def login(data):
+    name = data["username"]
+    return data["username"]
+
+
+def register_user(data):
     return data
-
-def example_route_add_param(data: int) -> int:
-    return data ** data
-
-def answer_route(data:str) -> str:
-    return data
-
-def generate_answer(data:str) -> str:
-    return {'message': 'Request received and processed successfully'}
