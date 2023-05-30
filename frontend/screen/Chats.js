@@ -47,7 +47,9 @@ function Chats({navigation}) {
         const data = await response.json();
         const now = Math.round(Date.now() / 1000);
 
-        setMessages([...messages, {key: now, text: data["hits"], isUser: false}]);
+        // Append to messages list
+        messages.push({key: now, text: data["hits"], isUser: false});
+        setMessages([...messages]);
         // data로 채팅창에 답변 띄우는 과정 필요, 구현 부탁드립니다
       } else {
         const errorData = await response.json();
@@ -76,25 +78,35 @@ function Chats({navigation}) {
               {message.isUser ? (
                   <View key={message} style={styles.myMsg}>
                     <View style={styles.myMsgBox}>
-                      <Text style={styles.myText}> {message.text}</Text>
+                      {/*<Text style={styles.myText}> {message.text}</Text>*/}
+                      <Text> {message.text}</Text>
                     </View>
                   </View>
               ) : (
                   <View key={message} style={styles.otherMsg}>
                     <View style={styles.otherMsgBox}>
-                      <Text style={styles.otherText}> {message.text}</Text>
-                </View>
-              </View>
-            )}
-          </View>
+                      {/*<Text style={styles.otherText}> {message.text}</Text>*/}
+                      <Text> {message.text}</Text>
+                    </View>
+                  </View>
+              )}
+            </View>
         ))}
       </View>
       <View style={styles.inputView}>
+        {/*Reset button*/}
+        <Pressable
+            style={styles.sendBtn}
+            onPress={() => {
+              setMessages([]);
+            }}>
+          <Text style={styles.sendText}>Reset</Text>
+        </Pressable>
         <TextInput
-          style={styles.TextInput}
-          placeholder="Ask anything."
-          placeholderTextColor="#003f5c"
-          onChangeText={inputText => setInputText(inputText)}></TextInput>
+            style={styles.TextInput}
+            placeholder="Ask anything"
+            placeholderTextColor="#003f5c"
+            onChangeText={inputText => setInputText(inputText)}></TextInput>
         <Pressable style={styles.sendBtn} onPress={handleMessageSubmit}>
           <Text style={styles.sendText}>Send</Text>
         </Pressable>
@@ -133,12 +145,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   TextInput: {
-    width: '80%',
+    width: '70%',
     backgroundColor: 'white',
   },
   sendBtn: {
     backgroundColor: '#002554',
-    width: '20%',
+    width: '15%',
     alignItems: 'center',
     justifyContent: 'center',
   },
