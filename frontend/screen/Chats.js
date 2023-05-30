@@ -1,12 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  TextInput,
-  Pressable,
-  FlatList,
-} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Pressable, StyleSheet, Text, TextInput, View,} from 'react-native';
 
 function Chats({navigation}) {
   const [messages, setMessages] = useState([]);
@@ -32,15 +25,22 @@ function Chats({navigation}) {
   };
 
   const sendMessageToChatGPT = async message => {
-    const url = 'http://127.0.0.1:5000/search/';
+    const url = 'http://10.0.2.2:5000/search/';
+
+    console.log("Querying:", message);
+
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({content: message}),
+        body: JSON.stringify({"query": message}),
       });
+
+      // Wait for response
+      await response;
+
       if (response.ok) {
         const data = await response.json();
         setMessages([...messages, {text: data, isUser: false}]);
