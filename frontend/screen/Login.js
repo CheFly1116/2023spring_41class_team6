@@ -1,14 +1,17 @@
-import {Image, Pressable, StatusBar, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Alert, Image, Pressable, StatusBar, StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 
-function Login({navigation}) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+this.showErrorMsg = false;
 
-  const skkuLoginSubmit = () => {
-    const skkuUrl = "http://10.0.2.2:5000/login/";
-      const headers = {
-          'Content-Type': 'application/json'
+function Login({navigation}) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const errorRef = React.createRef();
+
+    const skkuLoginSubmit = () => {
+        const skkuUrl = "http://10.0.2.2:5000/login/";
+        const headers = {
+            'Content-Type': 'application/json'
       };
     const data = {
         "username": username,
@@ -21,9 +24,11 @@ function Login({navigation}) {
     })
     .then(response => response.json())
     .then((responseJson) => {
-        if (responseJson["success"] == true)
-          navigation.navigate('Chats');
-        else console.log("로그인에 실패하였습니다. 아이디와 비밀번호를 확인하세요")
+        if (responseJson["success"] === true)
+            navigation.navigate('Chats');
+        else {
+            Alert.alert("로그인 실패", "아이디와 비밀번호를 확인하세요", [{text: "확인"}], {cancelable: false});
+        }
     })
   };
 
