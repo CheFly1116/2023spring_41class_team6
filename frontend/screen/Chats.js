@@ -22,6 +22,12 @@ function Chats({navigation}) {
 
       setMessages([...messages, {key: now, text: message, isUser: true}]);
       inputRef.current.clear();
+
+      // Show loading message
+      const now2 = Math.round(Date.now() / 1000);
+
+      setMessages([...messages, {key: now2, text: '생성중입니다...', isUser: false}]);
+
       sendMessageToChatGPT(message);
     }
   };

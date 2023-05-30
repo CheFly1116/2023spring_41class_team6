@@ -34,20 +34,19 @@ function Login({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={require('./assets/logo.jpg')} />
-      <StatusBar style="auto" />
-      <Text style={styles.title}> SKKU-GPT </Text>
-      <View style={styles.inputView}>
+        <Image style={styles.image} source={require('./assets/logo.jpg')}/>
+        <StatusBar style="auto"/>
+        <Text style={styles.title}> SKKU-GPT </Text><View style={styles.inputView}>
         <TextInput
-          style={styles.TextInput}
-          placeholder="Username"
-          placeholderTextColor="#003f5c"
-          onChangeText={username => setUsername(username)}
+            style={styles.TextInput}
+            placeholder="Username"
+            placeholderTextColor="#003f5c"
+            onChangeText={username => setUsername(username)}
         />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
+    </View>
+        <View style={styles.inputView}>
+            <TextInput
+                style={styles.TextInput}
           placeholder="Password"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
