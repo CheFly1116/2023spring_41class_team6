@@ -43,7 +43,7 @@ function Chats({navigation}) {
 
       if (response.ok) {
         const data = await response.json();
-        setMessages([...messages, {text: data, isUser: false}]);
+        setMessages([...messages, {text: data["hits"], isUser: false}]);
         // data로 채팅창에 답변 띄우는 과정 필요, 구현 부탁드립니다
       } else {
         const errorData = await response.json();

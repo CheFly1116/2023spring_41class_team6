@@ -1,24 +1,15 @@
-import {StatusBar} from 'react-native';
+import {Image, Pressable, StatusBar, StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Pressable,
-} from 'react-native';
-import base64 from 'base-64';
 
 function Login({navigation}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const skkuLoginSubmit = () => {
-    const skkuUrl = "http://127.0.0.1:5000/login/";
-    const headers = {
-        'Content-Type': 'application/json'
-    };
+    const skkuUrl = "http://10.0.2.2:5000/login/";
+      const headers = {
+          'Content-Type': 'application/json'
+      };
     const data = {
         "username": username,
         "password": password
