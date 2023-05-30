@@ -21,7 +21,7 @@ function Chats({navigation}) {
       const now = Math.round(Date.now() / 1000);
 
       setMessages([...messages, {key: now, text: message, isUser: true}]);
-      setInputText('');
+      inputRef.current.clear();
       sendMessageToChatGPT(message);
     }
   };
@@ -103,6 +103,7 @@ function Chats({navigation}) {
           <Text style={styles.sendText}>Reset</Text>
         </Pressable>
         <TextInput
+            ref={inputRef}
             style={styles.TextInput}
             placeholder="Ask anything"
             placeholderTextColor="#003f5c"
