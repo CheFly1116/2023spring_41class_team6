@@ -18,7 +18,9 @@ function Chats({navigation}) {
     console.log('ssss');
     const message = inputText.trim();
     if (message !== '') {
-      setMessages([...messages, {text: message, isUser: true}]);
+      const now = Math.round(Date.now() / 1000);
+
+      setMessages([...messages, {key: now, text: message, isUser: true}]);
       setInputText('');
       sendMessageToChatGPT(message);
     }
@@ -43,7 +45,9 @@ function Chats({navigation}) {
 
       if (response.ok) {
         const data = await response.json();
-        setMessages([...messages, {text: data["hits"], isUser: false}]);
+        const now = Math.round(Date.now() / 1000);
+
+        setMessages([...messages, {key: now, text: data["hits"], isUser: false}]);
         // data로 채팅창에 답변 띄우는 과정 필요, 구현 부탁드립니다
       } else {
         const errorData = await response.json();
@@ -68,17 +72,17 @@ function Chats({navigation}) {
       </View>
       <View style={styles.body}>
         {messages.map((message, index) => (
-          <View>
-            {message.isUser ? (
-              <View key={message} style={styles.myMsg}>
-                <View style={styles.myMsgBox}>
-                  <Text style={styles.myText}> {message.text}</Text>
-                </View>
-              </View>
-            ) : (
-              <View key={message} style={styles.otherMsg}>
-                <View style={styles.otherMsgBox}>
-                  <Text style={styles.otherText}> {message.text}</Text>
+            <View key={index}>
+              {message.isUser ? (
+                  <View key={message} style={styles.myMsg}>
+                    <View style={styles.myMsgBox}>
+                      <Text style={styles.myText}> {message.text}</Text>
+                    </View>
+                  </View>
+              ) : (
+                  <View key={message} style={styles.otherMsg}>
+                    <View style={styles.otherMsgBox}>
+                      <Text style={styles.otherText}> {message.text}</Text>
                 </View>
               </View>
             )}
