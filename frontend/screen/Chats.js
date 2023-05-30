@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Pressable, StyleSheet, Text, TextInput, View,} from 'react-native';
+import {Alert, Pressable, StyleSheet, Text, TextInput, View,} from 'react-native';
 
 function Chats({navigation}) {
   const [messages, setMessages] = useState([]);
@@ -28,11 +28,11 @@ function Chats({navigation}) {
 
       setMessages([...messages, {key: now2, text: '생성중입니다...', isUser: false}]);
 
-      sendMessageToChatGPT(message);
+      sendMessageToChatGPT(message, messages);
     }
   };
 
-  const sendMessageToChatGPT = async message => {
+  const sendMessageToChatGPT = async (message, newMessages) => {
     const url = 'http://10.0.2.2:5000/search/';
 
     console.log("Querying:", message);
@@ -46,26 +46,20 @@ function Chats({navigation}) {
         body: JSON.stringify({"query": message}),
       });
 
-      // Wait for response
-      await response;
-
       if (response.ok) {
         const data = await response.json();
         const now = Math.round(Date.now() / 1000);
 
-        // Append to messages list
-        messages.push({key: now, text: data["hits"], isUser: false});
-        setMessages([...messages]);
-        // data로 채팅창에 답변 띄우는 과정 필요, 구현 부탁드립니다
+        newMessages.push({key: now, text: data["hits"], isUser: false});
+        setMessages([...newMessages]);
       } else {
         const errorData = await response.json();
-        // 오류 처리 부분입니다
+        Alert.alert("오류", "서버와의 통신에 실패했습니다", [{text: "확인"}], {cancelable: false});
       }
     } catch (error) {
       console.error('Error', error);
     }
   };
-
   const handleKeyPress = e => {
     if (e.key === 'Enter') {
       handleMessageSubmit(e);
@@ -82,14 +76,14 @@ function Chats({navigation}) {
         {messages.map((message, index) => (
             <View key={index}>
               {message.isUser ? (
-                  <View key={message} style={styles.myMsg}>
+                  <View key={message.key} style={styles.myMsg}>
                     <View style={styles.myMsgBox}>
                       {/*<Text style={styles.myText}> {message.text}</Text>*/}
                       <Text> {message.text}</Text>
                     </View>
                   </View>
               ) : (
-                  <View key={message} style={styles.otherMsg}>
+                  <View key={message.key} style={styles.otherMsg}>
                     <View style={styles.otherMsgBox}>
                       {/*<Text style={styles.otherText}> {message.text}</Text>*/}
                       <Text> {message.text}</Text>
