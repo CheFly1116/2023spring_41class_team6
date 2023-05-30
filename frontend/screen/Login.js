@@ -58,10 +58,11 @@ function Login({navigation}) {
           onChangeText={password => setPassword(password)}
         />
       </View>
-      {/* onPress={skkuLoginSubmit} */}
+      
+      {/* onPress={() => navigation.navigate('Chats')} */}
       <Pressable
         style={styles.loginBtn}
-        onPress={() => navigation.navigate('Chats')}
+        onPress={skkuLoginSubmit}  
     >
         <Text style={styles.loginText}>LOGIN</Text>
       </Pressable>
